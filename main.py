@@ -18,14 +18,19 @@ def read_saved_tracks(file_path):
 
 
 def main():
-    run_type = int(sys.argv[1])
+    print("Starting...")
+    run_type = sys.argv[1]
     match run_type:
         case "Ex-Sp":
+            print("Exporting Spotify data...")
             export_spotify()
+            print("Exported Spotify data.")
         case "Im-You":
+            print("Importing Youtube data...")
             import_youtube_with_data()
+            print("Imported Youtube data.")
         case _:
-            print("Invalid type")
+            print("Invalid type, please use one of the following: Export Spotify(Ex-Sp), Import YouTube(Im-You)")
             exit()
 
 
