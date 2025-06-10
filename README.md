@@ -1,6 +1,6 @@
 # SpotifyConverter
-The app transfers your Spotify library to another music platform. It fetches
-liked tracks from Spotify and searches for them on YouTube Music.
+The app transfers your Spotify library to other music platforms.
+It fetches liked tracks from Spotify and searches for them on YouTube Music.
 
 ## Setup Spotify
 The export step uses [Spotipy](https://github.com/spotipy-dev/spotipy) and requires the following environment variables:
