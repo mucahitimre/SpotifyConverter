@@ -54,8 +54,7 @@ def import_youtube_with_data():
     else:
         play_list_id = test_play_list['playlistId']
     # threaded_add_youtube(id_list, yt_music, play_list_id)
-    for x in id_list:
-        add_youtube(id_list, yt_music, play_list_id)
+    add_youtube(id_list, yt_music, play_list_id)
 
     print("Imported Youtube data.")
 
