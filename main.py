@@ -1,9 +1,12 @@
 import json
 import sys
-from ytmusicapi import YTMusic
 from threading import Thread
+
+from ytmusicapi import YTMusic
 from Youtube import divide_list_into_chunks
 from Youtube import threaded_search
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
 
 
 def save_results_to_file(results, file_name):
@@ -14,6 +17,27 @@ def save_results_to_file(results, file_name):
 def read_saved_tracks(file_path):
     with open(file_path, 'r') as file:
         tracks = [line.strip() for line in file]
+    return tracks
+
+
+def fetch_spotify_saved_tracks():
+    """Return a list of saved track titles from the user's Spotify library."""
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="user-library-read"))
+    tracks = []
+    offset = 0
+    limit = 50
+    while True:
+        results = sp.current_user_saved_tracks(limit=limit, offset=offset)
+        items = results.get("items", [])
+        if not items:
+            break
+        for item in items:
+            track = item.get("track", {})
+            name = track.get("name", "")
+            artists = track.get("artists", [])
+            artist = artists[0]["name"] if artists else ""
+            tracks.append(f"{artist} - {name}")
+        offset += limit
     return tracks
 
 
@@ -35,7 +59,13 @@ def main():
 
 
 def export_spotify():
-    tracks = read_saved_tracks('saved_tracks.txt')
+    try:
+        tracks = fetch_spotify_saved_tracks()
+    except Exception:
+        tracks = read_saved_tracks('saved_tracks.txt')
+    with open('saved_tracks.txt', 'w') as f:
+        for track in tracks:
+            f.write(track + '\n')
     youtube_results = threaded_search(tracks, 100)
     save_results_to_file(youtube_results, 'youtube_search_results.json')
     print("Exported Spotify data.")
@@ -54,8 +84,7 @@ def import_youtube_with_data():
     else:
         play_list_id = test_play_list['playlistId']
     # threaded_add_youtube(id_list, yt_music, play_list_id)
-    for x in id_list:
-        add_youtube(id_list, yt_music, play_list_id)
+    add_youtube(id_list, yt_music, play_list_id)
 
     print("Imported Youtube data.")
 
