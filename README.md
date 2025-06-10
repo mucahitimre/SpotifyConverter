@@ -1,8 +1,9 @@
 # SpotifyConverter
-The app will doing my spotify library transfer to another music platforms
+The app transfers your Spotify library to another music platform. It fetches
+liked tracks from Spotify and searches for them on YouTube Music.
 
 ## Setup Spotify
-You must do the following configuration install before running, this configuration required for 'spotipy' package: 
+The export step uses [Spotipy](https://github.com/spotipy-dev/spotipy) and requires the following environment variables:
 ```
 export SPOTIPY_CLIENT_ID='your-spotify-client-id'
 export SPOTIPY_CLIENT_SECRET='your-spotify-client-secret'
@@ -13,18 +14,17 @@ export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 You must be YouTube authentication and this action easy with the following command: `` ytmusicapi oauth `` this command created `` oauth.json `` file in project root.
 
 ## Run
-If spotify and another music platform setup is complate you can start the application.
+Once Spotify and YouTube authentication are configured you can start the application.
 
-When start the application firstly must gets spotify library:
-```
+To export your saved tracks from Spotify and create `youtube_search_results.json` run:
+```bash
 python main.py Ex-Sp
 ```
 
-Then must be another platform import action start:
-- For Youtube:
-  ```
-  python main.py Im-You
-  ```
+Afterwards you can import the results into YouTube Music:
+```bash
+python main.py Im-You
+```
 
 
 
